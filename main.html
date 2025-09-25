@@ -1,0 +1,1165 @@
+<!DOCTYPE html>
+<html lang="th">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>ลักษณะของทรัพยากรป่าไม้ - eBook</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            line-height: 1.6;
+            background: linear-gradient(135deg, #2d5016 0%, #4a7c59 50%, #6b8e7d 100%);
+            min-height: 100vh;
+            color: #333;
+            overflow-x: hidden;
+        }
+
+        .ebook-container {
+            position: relative;
+            width: 100%;
+            height: 100vh;
+            overflow: hidden;
+        }
+
+        .pages-wrapper {
+            display: flex;
+            width: 700%; /* 7 pages * 100% */
+            height: 100vh;
+            transition: transform 0.6s cubic-bezier(0.25, 0.46, 0.45, 0.94);
+        }
+
+        .page {
+            width: 14.286%; /* 100% / 7 pages */
+            height: 100vh;
+            padding: 40px 20px 80px;
+            overflow-y: auto;
+            position: relative;
+            flex-shrink: 0;
+        }
+
+        .page-content {
+            max-width: 900px;
+            margin: 0 auto;
+            background: rgba(255, 255, 255, 0.95);
+            border-radius: 20px;
+            padding: 30px;
+            box-shadow: 0 20px 60px rgba(0,0,0,0.2);
+            backdrop-filter: blur(20px);
+            border: 1px solid rgba(255,255,255,0.3);
+            min-height: calc(100vh - 120px);
+            position: relative;
+        }
+
+        .page-header {
+            background: linear-gradient(45deg, #1a3310, #2d5016);
+            color: white;
+            padding: 30px;
+            margin: -30px -30px 30px -30px;
+            border-radius: 20px 20px 0 0;
+            text-align: center;
+            position: relative;
+            overflow: hidden;
+        }
+
+        .page-header::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            right: 0;
+            bottom: 0;
+            background: url('data:image/svg+xml,<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 100 100"><circle cx="20" cy="20" r="2" fill="rgba(255,255,255,0.1)"/><circle cx="70" cy="30" r="1" fill="rgba(255,255,255,0.1)"/><circle cx="40" cy="70" r="1.5" fill="rgba(255,255,255,0.1)"/></svg>') repeat;
+            animation: sparkle 20s linear infinite;
+        }
+
+        @keyframes sparkle {
+            0% { transform: translateX(0); }
+            100% { transform: translateX(100px); }
+        }
+
+        .page-title {
+            font-size: 2.2rem;
+            margin-bottom: 10px;
+            text-shadow: 2px 2px 4px rgba(0,0,0,0.5);
+            position: relative;
+            z-index: 1;
+        }
+
+        .page-subtitle {
+            font-size: 1.1rem;
+            opacity: 0.9;
+            position: relative;
+            z-index: 1;
+        }
+
+        .page-number {
+            position: absolute;
+            bottom: 20px;
+            right: 30px;
+            background: linear-gradient(45deg, #4a7c59, #2d5016);
+            color: white;
+            padding: 8px 16px;
+            border-radius: 20px;
+            font-weight: bold;
+            font-size: 0.9rem;
+            box-shadow: 0 4px 15px rgba(0,0,0,0.2);
+        }
+
+        .feature-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+            gap: 20px;
+            margin: 20px 0;
+        }
+
+        .feature-card {
+            background: linear-gradient(135deg, #f8fffe, #e8f5e8);
+            padding: 20px;
+            border-radius: 15px;
+            border-left: 5px solid #4a7c59;
+            transition: all 0.4s ease;
+            box-shadow: 0 8px 25px rgba(0,0,0,0.1);
+            transform: translateY(0);
+        }
+
+        .feature-card:hover {
+            transform: translateY(-8px) scale(1.02);
+            box-shadow: 0 15px 40px rgba(0,0,0,0.2);
+        }
+
+        .feature-card h3 {
+            color: #2d5016;
+            margin-bottom: 15px;
+            font-size: 1.3rem;
+        }
+
+        .feature-card p, .feature-card li {
+            margin-bottom: 8px;
+            color: #4a5568;
+            line-height: 1.6;
+        }
+
+        ul {
+            padding-left: 20px;
+        }
+
+        li {
+            margin-bottom: 8px;
+        }
+
+        /* Cover Page Styles */
+        .cover-page {
+            background: linear-gradient(135deg, #1a3310, #2d5016, #4a7c59);
+            color: white;
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+            align-items: center;
+            text-align: center;
+            position: relative;
+            overflow: hidden;
+        }
+
+        .cover-title {
+            font-size: 3.5rem;
+            font-weight: bold;
+            margin-bottom: 20px;
+            text-shadow: 3px 3px 6px rgba(0,0,0,0.5);
+            animation: fadeInUp 1s ease;
+        }
+
+        .cover-subtitle {
+            font-size: 1.5rem;
+            margin-bottom: 40px;
+            opacity: 0.9;
+            animation: fadeInUp 1s ease 0.3s both;
+        }
+
+        .cover-emoji {
+            font-size: 8rem;
+            margin-bottom: 30px;
+            animation: bounce 2s ease infinite;
+        }
+
+        @keyframes fadeInUp {
+            from {
+                opacity: 0;
+                transform: translateY(50px);
+            }
+            to {
+                opacity: 1;
+                transform: translateY(0);
+            }
+        }
+
+        @keyframes bounce {
+            0%, 20%, 50%, 80%, 100% {
+                transform: translateY(0);
+            }
+            40% {
+                transform: translateY(-20px);
+            }
+            60% {
+                transform: translateY(-10px);
+            }
+        }
+
+        /* Game Page Styles */
+        .game-container {
+            background: linear-gradient(135deg, #e6f3ff, #f0f8e8);
+            padding: 30px;
+            border-radius: 20px;
+            margin: 20px 0;
+            box-shadow: 0 15px 40px rgba(0,0,0,0.15);
+        }
+
+        .game-title {
+            text-align: center;
+            color: #2d5016;
+            margin-bottom: 30px;
+            font-size: 2.2rem;
+        }
+
+        .quiz-question {
+            background: white;
+            padding: 25px;
+            border-radius: 15px;
+            margin-bottom: 20px;
+            box-shadow: 0 8px 25px rgba(0,0,0,0.1);
+        }
+
+        .quiz-question h3 {
+            color: #2d5016;
+            margin-bottom: 20px;
+            font-size: 1.2rem;
+        }
+
+        .quiz-options {
+            display: grid;
+            gap: 12px;
+        }
+
+        .quiz-option {
+            background: linear-gradient(45deg, #f7fafc, #edf2f7);
+            border: 2px solid #e2e8f0;
+            padding: 15px 20px;
+            border-radius: 12px;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            text-align: left;
+            font-size: 1rem;
+        }
+
+        .quiz-option:hover {
+            background: linear-gradient(45deg, #e2e8f0, #cbd5e0);
+            border-color: #4a7c59;
+            transform: translateX(5px);
+        }
+
+        .quiz-option.correct {
+            background: linear-gradient(45deg, #c6f6d5, #9ae6b4);
+            border-color: #38a169;
+            color: #1a202c;
+        }
+
+        .quiz-option.incorrect {
+            background: linear-gradient(45deg, #fed7d7, #feb2b2);
+            border-color: #e53e3e;
+            color: #1a202c;
+        }
+
+        .quiz-score {
+            text-align: center;
+            font-size: 1.8rem;
+            color: #2d5016;
+            margin: 20px 0;
+            padding: 20px;
+            background: linear-gradient(45deg, #f0fff4, #c6f6d5);
+            border-radius: 15px;
+            box-shadow: 0 4px 15px rgba(0,0,0,0.1);
+        }
+
+        .game-controls {
+            text-align: center;
+            margin: 25px 0;
+        }
+
+        .game-btn {
+            background: linear-gradient(45deg, #4a7c59, #2d5016);
+            color: white;
+            border: none;
+            padding: 15px 30px;
+            border-radius: 25px;
+            cursor: pointer;
+            font-size: 1.1rem;
+            font-weight: bold;
+            margin: 0 10px;
+            transition: all 0.3s ease;
+            box-shadow: 0 6px 20px rgba(0,0,0,0.2);
+        }
+
+        .game-btn:hover {
+            transform: translateY(-3px);
+            box-shadow: 0 10px 30px rgba(0,0,0,0.3);
+        }
+
+        .game-btn:disabled {
+            opacity: 0.5;
+            cursor: not-allowed;
+            transform: none;
+        }
+
+        /* Navigation */
+        .navigation {
+            position: fixed;
+            bottom: 30px;
+            left: 50%;
+            transform: translateX(-50%);
+            display: flex;
+            gap: 15px;
+            z-index: 1000;
+            background: rgba(0,0,0,0.2);
+            backdrop-filter: blur(10px);
+            padding: 15px 25px;
+            border-radius: 50px;
+            box-shadow: 0 10px 30px rgba(0,0,0,0.3);
+        }
+
+        .nav-btn {
+            background: linear-gradient(45deg, #4a7c59, #6b8e7d);
+            color: white;
+            border: none;
+            padding: 12px 18px;
+            border-radius: 50%;
+            cursor: pointer;
+            font-size: 1.2rem;
+            transition: all 0.3s ease;
+            box-shadow: 0 4px 15px rgba(0,0,0,0.2);
+            width: 50px;
+            height: 50px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+        }
+
+        .nav-btn:hover {
+            background: linear-gradient(45deg, #6b8e7d, #4a7c59);
+            transform: translateY(-3px);
+            box-shadow: 0 8px 25px rgba(0,0,0,0.3);
+        }
+
+        .nav-btn:disabled {
+            opacity: 0.4;
+            cursor: not-allowed;
+            transform: none;
+        }
+
+        .page-indicators {
+            display: flex;
+            gap: 8px;
+            align-items: center;
+        }
+
+        .page-dot {
+            width: 12px;
+            height: 12px;
+            border-radius: 50%;
+            background: rgba(255,255,255,0.3);
+            cursor: pointer;
+            transition: all 0.3s ease;
+        }
+
+        .page-dot.active {
+            background: linear-gradient(45deg, #4a7c59, #2d5016);
+            transform: scale(1.3);
+            box-shadow: 0 2px 8px rgba(0,0,0,0.3);
+        }
+
+        .swipe-hint {
+            position: fixed;
+            top: 50%;
+            right: 30px;
+            transform: translateY(-50%);
+            background: rgba(0,0,0,0.7);
+            color: white;
+            padding: 10px 15px;
+            border-radius: 20px;
+            font-size: 0.9rem;
+            animation: slideInRight 2s ease, fadeOut 2s ease 3s forwards;
+            z-index: 999;
+        }
+
+        @keyframes slideInRight {
+            from {
+                opacity: 0;
+                transform: translateY(-50%) translateX(100px);
+            }
+            to {
+                opacity: 1;
+                transform: translateY(-50%) translateX(0);
+            }
+        }
+
+        @keyframes fadeOut {
+            to {
+                opacity: 0;
+                transform: translateY(-50%) translateX(100px);
+            }
+        }
+
+        .forest-animation {
+            position: fixed;
+            bottom: 0;
+            left: 0;
+            right: 0;
+            height: 120px;
+            background: linear-gradient(to top, rgba(45, 80, 22, 0.3), transparent);
+            pointer-events: none;
+            z-index: -1;
+        }
+
+        .tree {
+            position: absolute;
+            bottom: 0;
+            width: 50px;
+            height: 100px;
+            background: url('data:image/svg+xml,<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 50 100"><polygon points="25,15 8,70 42,70" fill="%23228B22"/><rect x="22" y="70" width="6" height="30" fill="%238B4513"/></svg>') no-repeat center;
+            animation: sway 8s ease-in-out infinite;
+        }
+
+        .tree:nth-child(1) { left: 3%; animation-delay: 0s; }
+        .tree:nth-child(2) { left: 12%; animation-delay: 1s; }
+        .tree:nth-child(3) { left: 21%; animation-delay: 2s; }
+        .tree:nth-child(4) { left: 78%; animation-delay: 0.5s; }
+        .tree:nth-child(5) { left: 87%; animation-delay: 1.5s; }
+        .tree:nth-child(6) { left: 96%; animation-delay: 2.5s; }
+
+        @keyframes sway {
+            0%, 100% { transform: rotate(0deg); }
+            25% { transform: rotate(1.5deg); }
+            75% { transform: rotate(-1.5deg); }
+        }
+
+        /* Responsive Design */
+        @media (max-width: 768px) {
+            .cover-title { font-size: 2.5rem; }
+            .cover-subtitle { font-size: 1.2rem; }
+            .cover-emoji { font-size: 6rem; }
+            .page-title { font-size: 1.8rem; }
+            .feature-grid { grid-template-columns: 1fr; }
+            .page { padding: 20px 10px 60px; }
+            .page-content { padding: 20px; }
+            .navigation { bottom: 20px; padding: 10px 20px; }
+            .nav-btn { width: 45px; height: 45px; font-size: 1.1rem; }
+            .swipe-hint { right: 20px; font-size: 0.8rem; }
+        }
+
+        /* Touch gestures for mobile */
+        @media (hover: none) and (pointer: coarse) {
+            .feature-card:hover {
+                transform: translateY(0) scale(1);
+            }
+        }
+    </style>
+</head>
+<body>
+    <div class="forest-animation">
+        <div class="tree"></div>
+        <div class="tree"></div>
+        <div class="tree"></div>
+        <div class="tree"></div>
+        <div class="tree"></div>
+        <div class="tree"></div>
+    </div>
+
+    <div class="swipe-hint" id="swipeHint">
+        👆 ปัด หรือใช้ปุ่มด้านล่าง
+    </div>
+
+    <div class="ebook-container">
+        <div class="pages-wrapper" id="pagesWrapper">
+            <!-- Cover Page -->
+            <div class="page cover-page">
+                <div class="cover-emoji">🌲</div>
+                <h1 class="cover-title">ลักษณะของทรัพยากรป่าไม้</h1>
+                <p class="cover-subtitle">แหล่งเรียนรู้เพื่อความยั่งยืนของป่าไม้ไทย</p>
+                <div style="margin-top: 50px; font-size: 1.1rem; opacity: 0.8; animation: fadeInUp 1s ease 0.6s both;">
+                    📖 เปิดหน้าถัดไปเพื่อเริ่มเรียนรู้
+                </div>
+            </div>
+
+            <!-- Page 1: ลักษณะของทรัพยากรป่าไม้ -->
+            <div class="page">
+                <div class="page-content">
+                    <div class="page-header">
+                        <h2 class="page-title">🌱 ลักษณะของทรัพยากรป่าไม้</h2>
+                        <p class="page-subtitle">คุณลักษณะสำคัญที่ควรรู้</p>
+                    </div>
+                    
+                    <div class="feature-grid">
+                        <div class="feature-card">
+                            <h3>🌱 เป็นทรัพยากรธรรมชาติที่มีชีวิt</h3>
+                            <ul>
+                                <li>ป่าไม้สามารถเจริญเติบโตและขยายพันธุ์ได้เองตามธรรมชาติ</li>
+                                <li>หากมีการดูแลและจัดการอย่างถูกต้อง ป่าไม้จะสามารถฟื้นตัวได้</li>
+                            </ul>
+                        </div>
+
+                        <div class="feature-card">
+                            <h3>🎯 ให้ประโยชน์ทั้งทางตรงและทางอ้อม</h3>
+                            <p><strong>ทางตรง:</strong> ไม้ซุง, ฟืน, เยื่อกระดาษ, พืชสมุนไพร, ยางไม้</p>
+                            <p><strong>ทางอ้อม:</strong> ดูดซับ CO₂, ป้องกันการชะล้างดิน, แหล่งต้นน้ำ, ที่อยู่สัตว์ป่า</p>
+                        </div>
+
+                        <div class="feature-card">
+                            <h3>🌿 เป็นระบบนิเวศที่ซับซ้อน</h3>
+                            <ul>
+                                <li>ประกอบด้วยพืช สัตว์ จุลินทรีย์ ดิน น้ำ ที่อยู่ร่วมกันอย่างสมดุล</li>
+                                <li>การเปลี่ยนแปลงองค์ประกอบหนึ่งส่งผลต่อระบบทั้งหมด</li>
+                            </ul>
+                        </div>
+
+                        <div class="feature-card">
+                            <h3>👥 เกี่ยวข้องกับวัฒนธรรมและความเป็นอยู่</h3>
+                            <ul>
+                                <li>ชุมชนท้องถิ่นพึ่งพิงป่าไม้ในการดำรงชีวิต</li>
+                                <li>มีบทบาททางจิตวิญญาณ เช่น ป่าศักดิ์สิทธิ์</li>
+                            </ul>
+                        </div>
+
+                        <div class="feature-card">
+                            <h3>🏔️ มีความเปลี่ยนแปลงตามภูมิประเทศ</h3>
+                            <p>ลักษณะป่าแตกต่างกัน เช่น ป่าดิบชื้น ป่าเบญจพรรณ ป่าสน ขึ้นอยู่กับภูมิประเทศและภูมิอากาศ</p>
+                        </div>
+
+                        <div class="feature-card">
+                            <h3>⚠️ เสี่ยงต่อการถูกทำลาย</h3>
+                            <ul>
+                                <li>การตัดไม้ผิดกฎหมาย</li>
+                                <li>ไฟป่า การเกษตรแผ้วถาง</li>
+                                <li>การขยายตัวของเมือง</li>
+                            </ul>
+                        </div>
+                    </div>
+                    <div class="page-number">หน้า 1</div>
+                </div>
+            </div>
+
+            <!-- Page 2: ปัญหาที่เกิดจากการใช้ทรัพยากรป่าไม้ -->
+            <div class="page">
+                <div class="page-content">
+                    <div class="page-header">
+                        <h2 class="page-title">⚠️ ปัญหาจากการใช้ทรัพยากรป่าไม้</h2>
+                        <p class="page-subtitle">ผลกระทบที่เกิดขึ้น</p>
+                    </div>
+                    
+                    <div class="feature-grid">
+                        <div class="feature-card">
+                            <h3>🌳 การสูญเสียพื้นที่ป่า</h3>
+                            <ul>
+                                <li>เกิดจากการตัดไม้เพื่อการเกษตร เลี้ยงสัตว์ ทำเหมือง</li>
+                                <li>ความหลากหลายทางชีวภาพลดลง</li>
+                                <li>สัตว์ป่าขาดที่อยู่อาศัย</li>
+                            </ul>
+                        </div>
+
+                        <div class="feature-card">
+                            <h3>🌊 การชะล้างพังทลายของดิน</h3>
+                            <ul>
+                                <li>ไม่มีรากไม้ยึดเกาะดิน</li>
+                                <li>พื้นที่สูงเสี่ยงดินถล่ม</li>
+                                <li>พื้นที่ลุ่มเสี่ยงตะกอนทับถม</li>
+                            </ul>
+                        </div>
+
+                        <div class="feature-card">
+                            <h3>💧 การเสื่อมโทรมของแหล่งน้ำ</h3>
+                            <ul>
+                                <li>ระบบนิเวศน้ำเสียสมดุล</li>
+                                <li>เกิดน้ำป่าไหลหลากในฤดูฝน</li>
+                                <li>ขาดแคลนน้ำในฤดูแล้ง</li>
+                            </ul>
+                        </div>
+
+                        <div class="feature-card">
+                            <h3>🦋 การสูญเสียความหลากหลายทางชีวภาพ</h3>
+                            <ul>
+                                <li>พืชและสัตว์หลายชนิดสูญพันธุ์</li>
+                                <li>ระบบนิเวศไม่สามารถทำงานได้เต็มที่</li>
+                            </ul>
+                        </div>
+
+                        <div class="feature-card">
+                            <h3>🌡️ การเปลี่ยนแปลงสภาพภูมิอากาศ</h3>
+                            <ul>
+                                <li>คาร์บอนถูกปล่อยออกเป็นก๊าซเรือนกระจก</li>
+                                <li>ความสามารถดูดซับ CO₂ ลดลง</li>
+                            </ul>
+                        </div>
+
+                        <div class="feature-card">
+                            <h3>🌪️ ภัยธรรมชาติรุนแรงขึ้น</h3>
+                            <ul>
+                                <li>น้ำท่วม ดินถล่มเกิดถี่ขึ้น</li>
+                                <li>ฝุ่น PM2.5 จากไฟป่า</li>
+                                <li>ความรุนแรงเพิ่มขึ้น</li>
+                            </ul>
+                        </div>
+                    </div>
+                    <div class="page-number">หน้า 2</div>
+                </div>
+            </div>
+
+            <!-- Page 3: ดัชนีตรวจวัดคุณภาพทรัพยากรป่าไม้ -->
+            <div class="page">
+                <div class="page-content">
+                    <div class="page-header">
+                        <h2 class="page-title">📊 ดัชนีตรวจวัดคุณภาพ</h2>
+                        <p class="page-subtitle">วิธีการวัดและประเมินป่าไม้</p>
+                    </div>
+                    
+                    <div class="feature-grid">
+                        <div class="feature-card">
+                            <h3>📊 ดัชนีพื้นที่ป่า</h3>
+                            <p><strong>ความหมาย:</strong> พื้นที่ป่าไม้ทั้งหมดต่อพื้นที่ประเทศ</p>
+                            <p><strong>หน่วย:</strong> ร้อยละของพื้นที่ป่าต่อพื้นที่รวม (%)</p>
+                            <p><strong>ความสำคัญ:</strong> ติดตามการเพิ่ม-ลดของพื้นที่ป่า</p>
+                        </div>
+
+                        <div class="feature-card">
+                            <h3>🌳 ดัชนีความหนาแน่นของเรือนยอด</h3>
+                            <p><strong>ความหมาย:</strong> ร้อยละพื้นที่ที่ถูกปกคลุมด้วยเรือนยอดไม้</p>
+                            <p><strong>การวัด:</strong> ใช้ภาพถ่ายดาวเทียมหรือโดรน</p>
+                            <p><strong>ความสำคัญ:</strong> บ่งชี้ความสมบูรณ์และความหนาแน่น</p>
+                        </div>
+
+                        <div class="feature-card">
+                            <h3>🦋 ดัชนีความหลากหลายทางชีวภาพ</h3>
+                            <p><strong>ความหมาย:</strong> จำนวนชนิดพันธุ์พืชและสัตว์ในพื้นที่ป่า</p>
+                            <p><strong>ตัวชี้วัด:</strong> Shannon-Wiener Index, Simpson's Diversity Index</p>
+                            <p><strong>ความสำคัญ:</strong> สะท้อนสุขภาพของระบบนิเวศป่า</p>
+                        </div>
+
+                        <div class="feature-card">
+                            <h3>📈 ดัชนีการเติบโตของไม้</h3>
+                            <p><strong>ความหมาย:</strong> ปริมาตรมวลชีวภาพที่เพิ่มขึ้นต่อปี</p>
+                            <p><strong>หน่วย:</strong> m³/ha/year หรือ ton/ha/year</p>
+                            <p><strong>ความสำคัญ:</strong> บ่งชี้อัตราฟื้นตัวและการกักเก็บคาร์บอน</p>
+                        </div>
+
+                        <div class="feature-card">
+                            <h3>🌿 ดัชนีความสมบูรณ์ของดินและน้ำ</h3>
+                            <p><strong>องค์ประกอบ:</strong> ความชุ่มชื้นของดิน ปริมาณอินทรียวัตถุ คุณภาพน้ำ</p>
+                            <p><strong>ความสำคัญ:</strong> ป่าไม้ดีช่วยรักษาสมดุลดินและน้ำ</p>
+                        </div>
+
+                        <div class="feature-card">
+                            <h3>🌍 ดัชนีการกักเก็บคาร์บอน</h3>
+                            <p><strong>ความหมาย:</strong> ปริมาณคาร์บอนที่สะสมในต้นไม้และดิน</p>
+                            <p><strong>หน่วย:</strong> ตันคาร์บอนต่อเฮกตาร์ (tC/ha)</p>
+                            <p><strong>ความสำคัญ:</strong> ประเมินบทบาทป่าในการลดโลกร้อน</p>
+                        </div>
+                    </div>
+                    <div class="page-number">หน้า 3</div>
+                </div>
+            </div>
+
+            <!-- Page 4: ปัญหาจากการขาดแคลนทรัพยากรป่าไม้ -->
+            <div class="page">
+                <div class="page-content">
+                    <div class="page-header">
+                        <h2 class="page-title">🚨 ปัญหาจากการขาดแคลน</h2>
+                        <p class="page-subtitle">ผลกระทบเมื่อป่าไม้หายไป</p>
+                    </div>
+                    
+                    <div class="feature-grid">
+                        <div class="feature-card">
+                            <h3>🌍 ปัญหาด้านสิ่งแวดล้อม</h3>
+                            <ul>
+                                <li>การสูญเสียความหลากหลายทางชีวภาพ</li>
+                                <li>การชะล้างพังทลายของดิน</li>
+                                <li>การเสื่อมโทรมของแหล่งน้ำ</li>
+                                <li>การเปลี่ยนแปลงภูมิอากาศ</li>
+                                <li>ฝุ่นและหมอกควันจากไฟป่า</li>
+                            </ul>
+                        </div>
+
+                        <div class="feature-card">
+                            <h3>💰 ปัญหาด้านเศรษฐกิจ</h3>
+                            <ul>
+                                <li>วัตถุดิบจากป่าลดลง</li>
+                                <li>ผลกระทบต่อเกษตรกรรม</li>
+                                <li>ค่าใช้จ่ายป้องกันภัยธรรมชาติเพิ่มขึ้น</li>
+                                <li>อุตสาหกรรมที่เกี่ยวข้องได้รับผลกระทบ</li>
+                            </ul>
+                        </div>
+
+                        <div class="feature-card">
+                            <h3>👥 ปัญหาด้านสังคม</h3>
+                            <ul>
+                                <li>ชุมชนท้องถิ่นสูญเสียแหล่งทำกิน</li>
+                                <li>ความขัดแย้งด้านที่ดินและทรัพยากร</li>
+                                <li>การอพยพย้ายถิ่น</li>
+                                <li>การสูญเสียภูมิปัญญาท้องถิ่น</li>
+                            </ul>
+                        </div>
+                    </div>
+                    <div class="page-number">หน้า 4</div>
+                </div>
+            </div>
+
+            <!-- Page 5: แนวทางการจัดการทรัพยากรป่าไม้ -->
+            <div class="page">
+                <div class="page-content">
+                    <div class="page-header">
+                        <h2 class="page-title">🌱 แนวทางการจัดการ</h2>
+                        <p class="page-subtitle">วิธีการดูแลป่าไม้อย่างยั่งยืน</p>
+                    </div>
+                    
+                    <div class="feature-grid">
+                        <div class="feature-card">
+                            <h3>🌱 การอนุรักษ์และฟื้นฟูป่าไม้</h3>
+                            <ul>
+                                <li>ปลูกป่าเพิ่มทั้งป่าเศรษฐกิจและป่าอนุรักษ์</li>
+                                <li>ฟื้นฟูพื้นที่ป่าเสื่อมโทรมด้วยพืชท้องถิ่น</li>
+                                <li>จัดตั้งเขตอนุรักษ์ เช่น อุทยานแห่งชาติ</li>
+                            </ul>
+                        </div>
+
+                        <div class="feature-card">
+                            <h3>♻️ การใช้ประโยชน์อย่างยั่งยืน</h3>
+                            <ul>
+                                <li>กำหนดโควตาการตัดไม้และใช้ระบบปลูกแทน</li>
+                                <li>ส่งเสริมการใช้ไม้จากสวนป่าและไม้ทดแทน</li>
+                                <li>พัฒนาอุตสาหกรรมแปรรูปไม้ให้คุ้มค่า</li>
+                            </ul>
+                        </div>
+
+                        <div class="feature-card">
+                            <h3>👥 การมีส่วนร่วมของชุมชน</h3>
+                            <ul>
+                                <li>ส่งเสริมป่าชุมชนให้คนในพื้นที่ร่วมดูแล</li>
+                                <li>จัดทำข้อตกลงการใช้ป่าไม้ร่วมกัน</li>
+                                <li>ให้ความรู้ด้านการจัดการป่าแก่ประชาชน</li>
+                            </ul>
+                        </div>
+
+                        <div class="feature-card">
+                            <h3>🚨 การป้องกันและควบคุม</h3>
+                            <ul>
+                                <li>เข้มงวดต่อการบุกรุกและตัดไม้ผิดกฎหมาย</li>
+                                <li>จัดทำระบบเฝ้าระวังด้วยเทคโนโลจี</li>
+                                <li>วางแผนป้องกันและควบคุมไฟป่า</li>
+                            </ul>
+                        </div>
+
+                        <div class="feature-card">
+                            <h3>💡 การใช้เทคโนโลยีและวิจัย</h3>
+                            <ul>
+                                <li>ใช้ GIS และ Remote Sensing ติดตามป่า</li>
+                                <li>วิจัยพันธุ์ไม้โตเร็วและทนอากาศแปรปรวน</li>
+                                <li>ประเมินมูลค่าทางเศรษฐศาสตร์ของป่า</li>
+                            </ul>
+                        </div>
+
+                        <div class="feature-card">
+                            <h3>⚖️ การออกกฎหมายและนโยบาย</h3>
+                            <ul>
+                                <li>จัดทำนโยบาย Zero Deforestation</li>
+                                <li>บังคับใช้กฎหมายอนุรักษ์ป่าไม้</li>
+                                <li>ให้สิทธิประโยชน์แก่ผู้ปลูกและดูแลป่า</li>
+                            </ul>
+                        </div>
+                    </div>
+                    <div class="page-number">หน้า 5</div>
+                </div>
+            </div>
+
+            <!-- Page 6: เกมทดสอบความรู้ -->
+            <div class="page">
+                <div class="page-content">
+                    <div class="page-header">
+                        <h2 class="page-title">🎮 เกมทดสอบความรู้</h2>
+                        <p class="page-subtitle">ทดสอบความเข้าใจเรื่องป่าไม้</p>
+                    </div>
+                    
+                    <div class="game-container">
+                        <div class="quiz-score" id="scoreDisplay">
+                            คะแนน: <span id="score">0</span>/<span id="totalQuestions">10</span>
+                        </div>
+
+                        <div class="game-controls">
+                            <button class="game-btn" id="gameStartBtn" onclick="startQuiz()">เริ่มเกม</button>
+                            <button class="game-btn" id="gameNextBtn" onclick="nextQuestion()" style="display:none;">คำถามถัดไป</button>
+                            <button class="game-btn" id="gameRestartBtn" onclick="restartQuiz()" style="display:none;">เล่นใหม่</button>
+                        </div>
+
+                        <div id="quizContainer" style="display:none;">
+                            <div class="quiz-question" id="questionContainer">
+                                <h3 id="questionText"></h3>
+                                <div class="quiz-options" id="optionsContainer">
+                                </div>
+                            </div>
+                        </div>
+
+                        <div id="gameResult" style="display:none;">
+                            <div style="text-align:center; padding:2rem; background:linear-gradient(45deg, #f0fff4, #c6f6d5); border-radius:15px; margin:2rem 0;">
+                                <h3 style="color:#2d5016; margin-bottom:1rem;">🎉 เสร็จสิ้นแล้ว! 🎉</h3>
+                                <p id="finalScore" style="font-size:1.5rem; color:#2d5016; margin-bottom:1rem;"></p>
+                                <p id="gradeMessage" style="font-size:1.2rem; color:#4a7c59;"></p>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="page-number">หน้า 6</div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Navigation -->
+    <div class="navigation">
+        <button class="nav-btn" id="prevBtn" onclick="previousPage()">◀</button>
+        
+        <div class="page-indicators">
+            <div class="page-dot active" onclick="goToPage(0)"></div>
+            <div class="page-dot" onclick="goToPage(1)"></div>
+            <div class="page-dot" onclick="goToPage(2)"></div>
+            <div class="page-dot" onclick="goToPage(3)"></div>
+            <div class="page-dot" onclick="goToPage(4)"></div>
+            <div class="page-dot" onclick="goToPage(5)"></div>
+        </div>
+        
+        <button class="nav-btn" id="nextBtn" onclick="nextPage()">▶</button>
+    </div>
+
+    <script>
+        // Global variables
+        let currentPage = 0;
+        const totalPages = 7;
+        let startX = 0;
+        let currentX = 0;
+        let isDragging = false;
+        const threshold = 100; // minimum swipe distance
+
+        // Quiz variables
+        let currentQuestion = 0;
+        let score = 0;
+        let gameActive = false;
+        let answered = false;
+
+        const quizData = [
+            {
+                question: "ทรัพยากรป่าไม้เป็นทรัพยากรประเภทใด?",
+                options: [
+                    "ทรัพยากรธรรมชาติที่มีชีวิต (Renewable Resource)",
+                    "ทรัพยากรธรรมชาติที่ไม่มีชีวิต (Non-renewable Resource)",
+                    "ทรัพยากรที่มนุษย์สร้างขึ้น",
+                    "ทรัพยากรที่ใช้แล้วหมดไป"
+                ],
+                correct: 0
+            },
+            {
+                question: "ข้อใดเป็นประโยชน์ทางอ้อมของป่าไม้?",
+                options: [
+                    "ไม้ซุงและฟืน",
+                    "ช่วยดูดซับคาร์บอนไดออกไซด์",
+                    "เยื่อกระดาษ",
+                    "ยางไม้"
+                ],
+                correct: 1
+            },
+            {
+                question: "ปัญหาใดเกิดจากการทำลายป่าไม้?",
+                options: [
+                    "การชะล้างพังทลายของดิน",
+                    "อุณหภูมิลดลง",
+                    "ฝนตกมากขึ้น",
+                    "ดินมีความอุดมสมบูรณ์เพิ่มขึ้น"
+                ],
+                correct: 0
+            },
+            {
+                question: "ดัชนีใดใช้วัดความหลากหลายทางชีวภาพ?",
+                options: [
+                    "Forest Area Index",
+                    "Carbon Stock Index",
+                    "Shannon-Wiener Index",
+                    "Canopy Cover Index"
+                ],
+                correct: 2
+            },
+            {
+                question: "การขาดแคลนทรัพยากรป่าไม้ส่งผลต่อภูมิอากาศอย่างไร?",
+                options: [
+                    "ทำให้อุณหภูมิลดลง",
+                    "เพิ่มความสามารถดูดซับ CO₂",
+                    "ลดความสามารถดูดซับ CO₂ และเพิ่มก๊าซเรือนกระจก",
+                    "ไม่มีผลกระทบต่อภูมิอากาศ"
+                ],
+                correct: 2
+            },
+            {
+                question: "แนวทางใดเป็นการจัดการป่าไม้อย่างยั่งยืน?",
+                options: [
+                    "ตัดไม้ให้หมดทุกต้น",
+                    "ใช้ระบบ Cut one, plant two",
+                    "ปลูกเฉพาะไม้เศรษฐกิจ",
+                    "ห้ามชุมชนเข้าใช้ป่า"
+                ],
+                correct: 1
+            },
+            {
+                question: "ป่าชุมชนมีความสำคัญอย่างไร?",
+                options: [
+                    "เป็นเพียงแหล่งไม้",
+                    "ให้คนในพื้นที่มีส่วนร่วมในการดูแลและใช้ประโยชน์",
+                    "ใช้เพื่อการท่องเที่ยวเท่านั้น",
+                    "เป็นพื้นที่ส่วนตัวของรัฐ"
+                ],
+                correct: 1
+            },
+            {
+                question: "เทคโนโลยีใดช่วยในการติดตามการเปลี่ยนแปลงพื้นที่ป่า?",
+                options: [
+                    "โทรศัพท์มือถือ",
+                    "GIS และ Remote Sensing",
+                    "เครื่องคิดเลข",
+                    "กล้องธรรมดา"
+                ],
+                correct: 1
+            },
+            {
+                question: "นโยบาย Zero Deforestation หมายถึงอะไร?",
+                options: [
+                    "ตัดป่าได้ไม่จำกัด",
+                    "ไม่อนุญาตให้ตัดป่าเพื่อกิจกรรมเศรษฐกิจ",
+                    "ปลูกป่าเท่านั้น",
+                    "ใช้ป่าเพื่อการเกษตร"
+                ],
+                correct: 1
+            },
+            {
+                question: "ประโยชน์ทางจิตวิญญาณของป่าไม้คืออะไร?",
+                options: [
+                    "เป็นแหล่งทำมาหากิน",
+                    "ให้ไม้ซุงและฟืน",
+                    "เป็นป่าศักดิ์สิทธิ์และสถานที่จัดพิธีกรรม",
+                    "ป้องกันอุทกภัย"
+                ],
+                correct: 2
+            }
+        ];
+
+        // Initialize
+        document.addEventListener('DOMContentLoaded', function() {
+            updateNavigation();
+            
+            // Touch/Mouse events for swiping
+            const pagesWrapper = document.getElementById('pagesWrapper');
+            
+            // Mouse events
+            pagesWrapper.addEventListener('mousedown', handleStart, { passive: false });
+            pagesWrapper.addEventListener('mousemove', handleMove, { passive: false });
+            pagesWrapper.addEventListener('mouseup', handleEnd, { passive: false });
+            pagesWrapper.addEventListener('mouseleave', handleEnd, { passive: false });
+            
+            // Touch events
+            pagesWrapper.addEventListener('touchstart', handleStart, { passive: false });
+            pagesWrapper.addEventListener('touchmove', handleMove, { passive: false });
+            pagesWrapper.addEventListener('touchend', handleEnd, { passive: false });
+            
+            // Keyboard navigation
+            document.addEventListener('keydown', function(e) {
+                if (e.key === 'ArrowLeft' || e.key === 'ArrowUp') {
+                    previousPage();
+                } else if (e.key === 'ArrowRight' || e.key === 'ArrowDown') {
+                    nextPage();
+                }
+            });
+        });
+
+        // Touch/Swipe handlers
+        function handleStart(e) {
+            isDragging = true;
+            startX = e.type.includes('mouse') ? e.clientX : e.touches[0].clientX;
+            currentX = startX;
+        }
+
+        function handleMove(e) {
+            if (!isDragging) return;
+            e.preventDefault();
+            currentX = e.type.includes('mouse') ? e.clientX : e.touches[0].clientX;
+        }
+
+        function handleEnd(e) {
+            if (!isDragging) return;
+            isDragging = false;
+            
+            const deltaX = currentX - startX;
+            
+            if (Math.abs(deltaX) > threshold) {
+                if (deltaX > 0) {
+                    previousPage();
+                } else {
+                    nextPage();
+                }
+            }
+        }
+
+        // Page navigation functions
+        function goToPage(pageIndex) {
+            if (pageIndex < 0 || pageIndex >= totalPages) return;
+            
+            currentPage = pageIndex;
+            const pagesWrapper = document.getElementById('pagesWrapper');
+            const translateX = -currentPage * (100 / totalPages);
+            pagesWrapper.style.transform = `translateX(${translateX}%)`;
+            
+            updateNavigation();
+        }
+
+        function nextPage() {
+            if (currentPage < totalPages - 1) {
+                goToPage(currentPage + 1);
+            }
+        }
+
+        function previousPage() {
+            if (currentPage > 0) {
+                goToPage(currentPage - 1);
+            }
+        }
+
+        function updateNavigation() {
+            const prevBtn = document.getElementById('prevBtn');
+            const nextBtn = document.getElementById('nextBtn');
+            const dots = document.querySelectorAll('.page-dot');
+            
+            prevBtn.disabled = currentPage === 0;
+            nextBtn.disabled = currentPage === totalPages - 1;
+            
+            dots.forEach((dot, index) => {
+                dot.classList.toggle('active', index === currentPage);
+            });
+        }
+
+        // Quiz Game Functions
+        function startQuiz() {
+            currentQuestion = 0;
+            score = 0;
+            gameActive = true;
+            answered = false;
+            
+            document.getElementById('gameStartBtn').style.display = 'none';
+            document.getElementById('quizContainer').style.display = 'block';
+            document.getElementById('gameResult').style.display = 'none';
+            document.getElementById('gameRestartBtn').style.display = 'none';
+            
+            updateScore();
+            showQuestion();
+        }
+
+        function showQuestion() {
+            if (currentQuestion >= quizData.length) {
+                endGame();
+                return;
+            }
+
+            answered = false;
+            const question = quizData[currentQuestion];
+            
+            document.getElementById('questionText').textContent = `คำถามที่ ${currentQuestion + 1}: ${question.question}`;
+            
+            const optionsContainer = document.getElementById('optionsContainer');
+            optionsContainer.innerHTML = '';
+            
+            question.options.forEach((option, index) => {
+                const optionDiv = document.createElement('div');
+                optionDiv.className = 'quiz-option';
+                optionDiv.textContent = option;
+                optionDiv.onclick = () => selectAnswer(index, optionDiv);
+                optionsContainer.appendChild(optionDiv);
+            });
+
+            document.getElementById('gameNextBtn').style.display = 'none';
+        }
+
+        function selectAnswer(selectedIndex, selectedElement) {
+            if (answered) return;
+            
+            answered = true;
+            const question = quizData[currentQuestion];
+            const options = document.querySelectorAll('.quiz-option');
+            
+            options.forEach((option, index) => {
+                option.style.pointerEvents = 'none';
+                if (index === question.correct) {
+                    option.classList.add('correct');
+                } else if (index === selectedIndex && index !== question.correct) {
+                    option.classList.add('incorrect');
+                }
+            });
+
+            if (selectedIndex === question.correct) {
+                score++;
+                updateScore();
+            }
+
+            setTimeout(() => {
+                document.getElementById('gameNextBtn').style.display = 'inline-block';
+            }, 1000);
+        }
+
+        function nextQuestion() {
+            currentQuestion++;
+            
+            // Reset option styles
+            const options = document.querySelectorAll('.quiz-option');
+            options.forEach(option => {
+                option.classList.remove('correct', 'incorrect');
+                option.style.pointerEvents = 'auto';
+            });
+            
+            showQuestion();
+        }
+
+        function updateScore() {
+            document.getElementById('score').textContent = score;
+            document.getElementById('totalQuestions').textContent = quizData.length;
+        }
+
+        function endGame() {
+            gameActive = false;
+            document.getElementById('quizContainer').style.display = 'none';
+            document.getElementById('gameResult').style.display = 'block';
+            document.getElementById('gameRestartBtn').style.display = 'inline-block';
+            
+            const percentage = (score / quizData.length) * 100;
+            document.getElementById('finalScore').textContent = `คะแนนของคุณ: ${score}/${quizData.length} (${percentage.toFixed(1)}%)`;
+            
+            let gradeMessage = '';
+            if (percentage >= 90) {
+                gradeMessage = '🌟 ยอดเยี่ยม! คุณมีความรู้เรื่องป่าไม้อย่างลึกซึ้ง';
+            } else if (percentage >= 70) {
+                gradeMessage = '👍 ดีมาก! คุณเข้าใจเรื่องป่าไม้ค่อนข้างดี';
+            } else if (percentage >= 50) {
+                gradeMessage = '👌 พอใช้ แต่ควรศึกษาเพิ่มเติมนะครับ';
+            } else {
+                gradeMessage = '📚 ควรศึกษาเนื้อหาเพิ่มเติมและลองใหม่อีกครั้ง';
+            }
+            
+            document.getElementById('gradeMessage').textContent = gradeMessage;
+        }
+
+        function restartQuiz() {
+            startQuiz();
+        }
+    </script>
+</body>
+</html>
