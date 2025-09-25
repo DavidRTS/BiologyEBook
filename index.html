@@ -446,7 +446,98 @@
             75% { transform: rotate(-1.5deg); }
         }
 
-        /* Responsive Design */
+        /* Forest Guide Character */
+        .forest-guide {
+            position: fixed;
+            bottom: 120px;
+            left: 30px;
+            width: 120px;
+            height: 140px;
+            z-index: 1001;
+            cursor: pointer;
+            transition: all 0.3s ease;
+        }
+
+        .guide-character {
+            width: 100%;
+            height: 100%;
+            background: url('data:image/svg+xml,<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 120 140"><defs><linearGradient id="skinGrad" x1="0%" y1="0%" x2="100%" y2="100%"><stop offset="0%" style="stop-color:%23FFD1A6;stop-opacity:1" /><stop offset="100%" style="stop-color:%23F4A460;stop-opacity:1" /></linearGradient><linearGradient id="clothGrad" x1="0%" y1="0%" x2="100%" y2="100%"><stop offset="0%" style="stop-color:%2387CEEB;stop-opacity:1" /><stop offset="100%" style="stop-color:%234682B4;stop-opacity:1" /></linearGradient></defs><!-- Head --><circle cx="60" cy="35" r="25" fill="url(%23skinGrad)"/><!-- Eyes --><circle cx="52" cy="30" r="3" fill="%23000"/><!-- Left eye --><circle cx="68" cy="30" r="3" fill="%23000"/><!-- Right eye --><circle cx="52" cy="29" r="1" fill="%23FFF"/><!-- Left eye shine --><circle cx="68" cy="29" r="1" fill="%23FFF"/><!-- Right eye shine --><path d="M 55 40 Q 60 45 65 40" stroke="%23000" stroke-width="2" fill="none"/><!-- Smile --><circle cx="50" cy="32" r="2" fill="%23FFB6C1"/><!-- Left blush --><circle cx="70" cy="32" r="2" fill="%23FFB6C1"/><!-- Right blush --><!-- Hat --><ellipse cx="60" cy="25" rx="28" ry="8" fill="%23228B22"/><!-- Hat brim --><rect x="50" y="15" width="20" height="15" rx="10" fill="%23228B22"/><!-- Hat top --><circle cx="60" cy="12" r="3" fill="%23FFD700"/><!-- Hat decoration --><!-- Body --><ellipse cx="60" cy="80" rx="20" ry="30" fill="url(%23clothGrad)"/><!-- Arms --><ellipse cx="35" cy="70" rx="8" ry="20" fill="url(%23skinGrad)" transform="rotate(-15 35 70)"/><!-- Left arm --><ellipse cx="85" cy="70" rx="8" ry="20" fill="url(%23skinGrad)" transform="rotate(15 85 70)"/><!-- Right arm --><!-- Hands --><circle cx="30" cy="85" r="6" fill="url(%23skinGrad)"/><!-- Left hand --><circle cx="90" cy="85" r="6" fill="url(%23skinGrad)"/><!-- Right hand --><!-- Tree in hand --><rect x="87" y="75" width="3" height="15" fill="%23654321"/><!-- Tree trunk --><polygon points="88.5,70 82,80 95,80" fill="%23228B22"/><!-- Tree leaves --><!-- Legs --><ellipse cx="50" cy="125" rx="8" ry="18" fill="%23000080"/><!-- Left leg --><ellipse cx="70" cy="125" rx="8" ry="18" fill="%23000080"/><!-- Right leg --><!-- Feet --><ellipse cx="50" cy="138" rx="10" ry="5" fill="%23654321"/><!-- Left foot --><ellipse cx="70" cy="138" rx="10" ry="5" fill="%23654321"/><!-- Right foot --></svg>') no-repeat center center;
+            background-size: contain;
+            animation: float 3s ease-in-out infinite;
+        }
+
+        @keyframes float {
+            0%, 100% { transform: translateY(0px); }
+            50% { transform: translateY(-10px); }
+        }
+
+        .guide-speech-bubble {
+            position: absolute;
+            top: -80px;
+            left: -50px;
+            background: linear-gradient(135deg, #ffffff, #f0f8ff);
+            border: 3px solid #4a7c59;
+            border-radius: 20px;
+            padding: 15px 20px;
+            min-width: 200px;
+            max-width: 300px;
+            box-shadow: 0 8px 25px rgba(0,0,0,0.2);
+            opacity: 0;
+            transform: scale(0.8);
+            transition: all 0.3s ease;
+            z-index: 1002;
+        }
+
+        .guide-speech-bubble::after {
+            content: '';
+            position: absolute;
+            bottom: -15px;
+            left: 80px;
+            width: 0;
+            height: 0;
+            border-left: 15px solid transparent;
+            border-right: 15px solid transparent;
+            border-top: 15px solid #4a7c59;
+        }
+
+        .guide-speech-bubble.show {
+            opacity: 1;
+            transform: scale(1);
+        }
+
+        .guide-speech-text {
+            font-size: 0.95rem;
+            color: #2d5016;
+            font-weight: bold;
+            line-height: 1.4;
+            margin: 0;
+        }
+
+        .forest-guide:hover .guide-character {
+            transform: scale(1.1);
+            animation-duration: 1s;
+        }
+
+        @media (max-width: 768px) {
+            .forest-guide {
+                width: 80px;
+                height: 95px;
+                bottom: 100px;
+                left: 20px;
+            }
+            
+            .guide-speech-bubble {
+                top: -70px;
+                left: -40px;
+                min-width: 180px;
+                max-width: 250px;
+                padding: 12px 16px;
+            }
+            
+            .guide-speech-text {
+                font-size: 0.85rem;
+            }
+        }
         @media (max-width: 768px) {
             .cover-title { font-size: 2.5rem; }
             .cover-subtitle { font-size: 1.2rem; }
@@ -822,7 +913,12 @@
         </div>
     </div>
 
-    <!-- Navigation -->
+    <div class="forest-guide" onclick="toggleGuideMessage()">
+        <div class="guide-character"></div>
+        <div class="guide-speech-bubble" id="guideBubble">
+            <p class="guide-speech-text" id="guideText">สวัสดีครับ! ผมชื่อสมพงษ์ ผมจะเป็นไกด์พาทุกคนเรียนรู้เรื่องป่าไม้กันนะครับ! 🌲</p>
+        </div>
+    </div>
     <div class="navigation">
         <button class="nav-btn" id="prevBtn" onclick="previousPage()">◀</button>
         
@@ -833,6 +929,7 @@
             <div class="page-dot" onclick="goToPage(3)"></div>
             <div class="page-dot" onclick="goToPage(4)"></div>
             <div class="page-dot" onclick="goToPage(5)"></div>
+            <div class="page-dot" onclick="goToPage(6)"></div>
         </div>
         
         <button class="nav-btn" id="nextBtn" onclick="nextPage()">▶</button>
